@@ -6,7 +6,9 @@ contract Register {
     address public owner;
     mapping(bytes32 => address) ai;
 
-    event SignUp(bytes32 AI_id, address price_addr);
+    event EventRegister(bytes32 AI_id, address price_addr);
+    event EventDelete(bytes32 AI_id);
+    event EventSet(bytes32 AI_id, address price_addr);
 
     function Register(){
         owner = msg.sender;
@@ -18,7 +20,7 @@ contract Register {
 
     function register(bytes32 AI_id, address price_addr) onlyAdmin {
         ai[AI_id] = price_addr;
-        SignUp(AI_id, price_addr);
+        EventRegister(AI_id, price_addr);
     }
 
     function get_price_addr(bytes32 AI_id) constant returns (address) {
@@ -27,10 +29,12 @@ contract Register {
 
     function deleteAI(bytes32 AI_id) onlyAdmin {
         delete ai[AI_id];
+        EventDelete(AI_id);
     }
 
     function set_price_addr(bytes32 AI_id, address price_addr) onlyAdmin {
         ai[AI_id] = price_addr;
+        EventSet(AI_id, price_addr);
     }
 
     function isRegistered(bytes32 AI_id) onlyAdmin constant returns (bool){

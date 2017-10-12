@@ -14,6 +14,7 @@ module.exports = (solFile) => {
   const compiledCode = require('solc')
     .compile(code)
 
+
   const contractName = Object.getOwnPropertyNames(compiledCode.contracts)[0];
 
   const abiDefinition = compiledCode

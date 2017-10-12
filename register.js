@@ -17,11 +17,10 @@ module.exports = class Register {
       const contract = this.web3.eth.contract(JSON.parse(this.tokenContractsAbi));
       this.token = contract.at(contractAddress);
       this.account = account.address;
-      this.event = this.token.SignUp();
-      this.event.watch((err, res) => {
-        if(!err)
-          console.log("event watch triggered: " + JSON.stringify(res));
-      })
+      this.eventRegister = this.token.EventRegister();
+      this.eventDelete = this.token.EventDelete();
+      this.eventSet = this.token.EventSet();
+
       resolve("")
     })
 
@@ -29,10 +28,15 @@ module.exports = class Register {
 
   registerAI(AI_Id, address) {
     return new Promise(resolve => {
-      this.token.register(AI_Id, address, {from: this.account, gas: cost.gas || 900000}, (err, res) => {
-        console.log("register: " + res);
-        resolve(res);
+      this.token.register(AI_Id, address, {from: this.account, gas: cost.gas || 900000});
+      console.log("Register AI ...");
+      this.eventRegister.watch((err, res) => {
+        if(!err) {
+          console.log("Register event triggered: " + JSON.stringify(res));
+          resolve("");
+        }
       })
+
     })
   }
 
@@ -44,18 +48,28 @@ module.exports = class Register {
 
   setAIAddr(AI_Id, address) {
     return new Promise(resolve => {
-      this.token.set_price_addr(AI_Id, address, {from: this.account, gas: cost.gas || 900000}, (err, res) => {
-        resolve(res);
-      })
+      this.token.set_price_addr(AI_Id, address, {from: this.account, gas: cost.gas || 900000});
+      console.log("Set AI ...");
+      this.eventSet.watch((err, res) => {
+        if(!err) {
+          console.log("Set event triggered: " + JSON.stringify(res));
+          resolve("");
+      }
     })
+   })
   }
 
   deleteAIByName(AI_Id) {
     return new Promise(resolve => {
-      this.token.deleteAI(AI_Id, {from: this.account, gas: cost.gas || 900000}, (err, res) => {
-        console.log("delete: " + res);
-        resolve(res);
+      this.token.deleteAI(AI_Id, {from: this.account, gas: cost.gas || 900000});
+      console.log("Delete AI ...");
+      this.eventDelete.watch((err, res) => {
+        if(!err) {
+          console.log("Delete event triggered: " + JSON.stringify(res));
+          resolve("");
+        }
       })
+
     })
   }
 

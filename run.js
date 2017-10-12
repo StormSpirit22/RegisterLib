@@ -22,14 +22,11 @@ async function run() {
 
   await register.initialize(contractAddress);
   register.getAIAddr('ImageIdentification')
-  // console.log("ImageIdentification AI's address: " + );
-
   console.log("ImageIdentification is registered? " + register.isRegistered('ImageIdentification'));
 
   //判断AI是否已经注册
   if (!register.isRegistered('ImageIdentification')){
 
-    console.log("Register ImageIdentification...");
     register.registerAI('ImageIdentification', '0x12345678901234567890123456789').then(function(){
       register.getAIAddr('ImageIdentification');
     });
@@ -37,16 +34,13 @@ async function run() {
   }
   else {
 
-    // console.log("Alter ImageIdentification AI's address...");
-    // await register.setAIAddr('ImageIdentification', '0x987654321987654321987654321');
-    // setTimeout(() => {
-    //   console.log("After alter, ImageIdentification AI's address: " + register.getAIAddr('ImageIdentification'));
-    // }, 30000)
+      register.setAIAddr('ImageIdentification', '0x987654321987654321987654321').then(function(){
+        register.getAIAddr('ImageIdentification');
+      });
 
-    console.log("Delete ImageIdentification...");
-    register.deleteAIByName('ImageIdentification').then(function(){
-      register.getAIAddr('ImageIdentification');
-  });
+  //   register.deleteAIByName('ImageIdentification').then(function(){
+  //     register.getAIAddr('ImageIdentification');
+  // });
 
   }
 }
