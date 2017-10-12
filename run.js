@@ -21,8 +21,8 @@ async function run() {
   console.log("Contract Address: " + contractAddress);
 
   await register.initialize(contractAddress);
-
-  console.log("ImageIdentification AI's address: " + register.getAIAddr('ImageIdentification'));
+  register.getAIAddr('ImageIdentification')
+  // console.log("ImageIdentification AI's address: " + );
 
   console.log("ImageIdentification is registered? " + register.isRegistered('ImageIdentification'));
 
@@ -30,11 +30,9 @@ async function run() {
   if (!register.isRegistered('ImageIdentification')){
 
     console.log("Register ImageIdentification...");
-    await register.registerAI('ImageIdentification', '0x12345678901234567890123456789');
-    //由于链上更新需要时间，所以设置30s延迟输出结果
-    setTimeout(() => {
-      console.log("After register, ImageIdentification AI's address: " + register.getAIAddr('ImageIdentification'));
-    }, 30000)
+    register.registerAI('ImageIdentification', '0x12345678901234567890123456789').then(function(){
+      register.getAIAddr('ImageIdentification');
+    });
 
   }
   else {
@@ -46,10 +44,9 @@ async function run() {
     // }, 30000)
 
     console.log("Delete ImageIdentification...");
-    await register.deleteAIByName('ImageIdentification');
-    setTimeout(() => {
-      console.log("After delete, ImageIdentification AI's address: " + register.getAIAddr('ImageIdentification'));
-    }, 30000)
+    register.deleteAIByName('ImageIdentification').then(function(){
+      register.getAIAddr('ImageIdentification');
+  });
 
   }
 }

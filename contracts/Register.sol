@@ -6,6 +6,8 @@ contract Register {
     address public owner;
     mapping(bytes32 => address) ai;
 
+    event SignUp(bytes32 AI_id, address price_addr);
+
     function Register(){
         owner = msg.sender;
     }
@@ -16,6 +18,7 @@ contract Register {
 
     function register(bytes32 AI_id, address price_addr) onlyAdmin {
         ai[AI_id] = price_addr;
+        SignUp(AI_id, price_addr);
     }
 
     function get_price_addr(bytes32 AI_id) constant returns (address) {
